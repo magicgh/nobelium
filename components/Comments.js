@@ -24,6 +24,13 @@ const CusdisComponent = dynamic(
   { ssr: false }
 )
 
+const DisqusComponent = dynamic(
+  () => {
+    return import('disqus-react').then(m => m.DiscussionEmbed)
+  },
+  { ssr: false }
+)
+
 const Comments = ({ frontMatter }) => {
   const router = useRouter()
 
@@ -63,6 +70,16 @@ const Comments = ({ frontMatter }) => {
             pageTitle: frontMatter.title,
             pageUrl: BLOG.link + router.asPath,
             theme: BLOG.appearance
+          }}
+        />
+      )}
+      {BLOG.comment && BLOG.comment.provider === 'disqus' && (
+        <DisqusComponent
+          shortname={BLOG.comment.disqusConfig.shortname}
+          config={{
+            url: BLOG.link + router.asPath,
+            identifier: frontMatter.id,
+            title: frontMatter.title
           }}
         />
       )}
