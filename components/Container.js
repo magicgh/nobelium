@@ -1,12 +1,14 @@
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
-import BLOG from '@/blog.config'
+import { useConfig } from '@/lib/config'
 import Head from 'next/head'
 import PropTypes from 'prop-types'
 import cn from 'classnames'
 // import BlogPost from './BlogPost'
 
 const Container = ({ children, layout, fullWidth, ...customMeta }) => {
+  const BLOG = useConfig()
+
   const url = BLOG.path.length ? `${BLOG.link}/${BLOG.path}` : BLOG.link
   const meta = {
     title: BLOG.title,
@@ -57,16 +59,15 @@ const Container = ({ children, layout, fullWidth, ...customMeta }) => {
           <>
             <meta
               property="article:published_time"
-              content={meta.date || meta.createdTime}
+              content={meta.date}
             />
             <meta property="article:author" content={BLOG.author} />
           </>
         )}
       </Head>
       <div
-        className={`wrapper ${
-          BLOG.font === 'serif' ? 'font-serif' : 'font-sans'
-        }`}
+        className={`wrapper ${BLOG.font === 'serif' ? 'font-serif' : 'font-sans'
+          }`}
       >
         <Header
           navBarTitle={layout === 'blog' ? meta.title : null}
